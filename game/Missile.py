@@ -11,7 +11,7 @@ class Missile(pygame.sprite.Sprite):
         self.rect.y = y
 
     def move(self):
-        self.rect.y -= 10
+        self.rect.y -= 5
 
     def getRect(self):
         return self.rect
