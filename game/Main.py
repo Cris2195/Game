@@ -31,13 +31,21 @@ def randomCoordToAsteroids(asteroids):
     asteroids.setCoord_X(random.randint(1, 400) % w)
 
 
+def getRandomCoord(*args):
+    for elem in args:
+        elem.setCoord_X(random.randint(1, 400))
+        elem.setCoord_Y(random.randint(1, 100))
+
+
 def menuFun(screen):
     font = pygame.font.SysFont("comicsansms", 40)
     text = font.render("Asteroid", True, random.choice(list_of_colors))
     screen.fill((255, 255, 255))
-    screen.blit(text, (150,150))
+    screen.blit(text, (150, 150))
     pygame.display.flip()
-def finishGame(risultato : str,screen):
+
+
+def finishGame(risultato: str, screen):
     screen.fill(WHITE)
     if risultato == "YOU WON":
         font = pygame.font.SysFont("comicsansms", 40)
@@ -45,12 +53,14 @@ def finishGame(risultato : str,screen):
         screen.fill((255, 255, 255))
         screen.blit(text, (150, 150))
         pygame.display.flip()
+        pygame.time.delay(1000)
     if risultato == "GAME OVER":
         font = pygame.font.SysFont("comicsansms", 40)
         text = font.render("GAME OVER", True, random.choice(list_of_colors))
         screen.fill((255, 255, 255))
         screen.blit(text, (150, 150))
         pygame.display.flip()
+        pygame.time.delay(1000)
 
 
 # initialize pygame
@@ -76,7 +86,6 @@ while menu:
             if event.key == pygame.K_SPACE:
                 menu = False
 
-
 screen.blit(bk, (0, 0))
 pygame.display.flip()
 clock = pygame.time.Clock()
@@ -93,6 +102,7 @@ b2 = Asteroid()
 b3 = Asteroid()
 b4 = Asteroid()
 b5 = Asteroid()
+getRandomCoord(b1,b2,b3,b4,b5)
 asteroids_group.add(b1)
 asteroids_group.add(b2)
 asteroids_group.add(b3)
@@ -122,8 +132,7 @@ while inGame:
     asteroids_group.update()
     collision = pygame.sprite.spritecollide(sp, asteroids_group, False)
     for c in collision:
-        finishGame("GAME OVER",screen)
-        pygame.time.delay(200)
+        finishGame("GAME OVER", screen)
         inGame = False
     if missile is not None:
         collisionMissile = pygame.sprite.spritecollide(missile, asteroids_group, False)
@@ -132,6 +141,9 @@ while inGame:
             screen.blit(destroyed_asteroids, coll.getRect())
             pygame.display.flip()
             asteroids_group.remove(coll)
+    if len(list(asteroids_group)) == 0:
+        finishGame("YOU WON", screen)
+        inGame = False
 
     screen.blit(bk, (0, 0))
     if fire:
@@ -140,10 +152,7 @@ while inGame:
     screen.blit(shuttle, sp.getRect())
     for x in asteroids_group:
         screen.blit(asteroid, x.getRect())
-    if len(list(asteroids_group)) == 0:
-        finishGame("YOU WON",screen)
-        pygame.time.delay(200)
-        inGame = False
+
 
     pygame.display.flip()
     clock.tick(60)
