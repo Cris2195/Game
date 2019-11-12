@@ -40,8 +40,12 @@ def getRandomCoord(*args):
 def menuFun(screen):
     font = pygame.font.SysFont("comicsansms", 40)
     text = font.render("Asteroid", True, random.choice(list_of_colors))
+    print(pygame.font.get_fonts())
+    font1 = pygame.font.SysFont("constantia",20)
+    info = font1.render("Push space to begin",True,BLACK)
     screen.fill((255, 255, 255))
-    screen.blit(text, (150, 150))
+    screen.blit(text, (130, 140))
+    screen.blit(info,(130,210))
     pygame.display.flip()
 
 
