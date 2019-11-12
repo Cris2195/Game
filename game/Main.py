@@ -28,7 +28,7 @@ def createAsteroids():
 def randomCoordToAsteroids(asteroids):
     w, h = pygame.display.get_surface().get_size()
     asteroids.setCoord_Y(random.randint(1, 100))
-    asteroids.setCoord_X(random.randint(1, 400) % w)
+    asteroids.setCoord_X(random.randint(1, 300))
 
 
 def getRandomCoord(*args):
@@ -76,6 +76,7 @@ destroyed_asteroids = pygame.image.load("destroyed-planet.png")
 size_screen = (width, heigth) = 415, 415
 screen = pygame.display.set_mode(size_screen)
 menu = True;
+contatore = 4
 while menu:
     menuFun(screen)
     for event in pygame.event.get():
@@ -91,6 +92,7 @@ pygame.display.flip()
 clock = pygame.time.Clock()
 inGame = True
 fire = False
+increaseSpeed = False
 sprite_list = pygame.sprite.Group()
 asteroids_group = pygame.sprite.Group()
 sp = Starship()
@@ -102,13 +104,14 @@ b2 = Asteroid()
 b3 = Asteroid()
 b4 = Asteroid()
 b5 = Asteroid()
-getRandomCoord(b1,b2,b3,b4,b5)
+getRandomCoord(b1, b2, b3, b4, b5)
 asteroids_group.add(b1)
 asteroids_group.add(b2)
 asteroids_group.add(b3)
 asteroids_group.add(b4)
 asteroids_group.add(b5)
 pygame.time.set_timer(pygame.USEREVENT, 100)
+pygame.time.set_timer(pygame.USEREVENT + 1 , 10000)
 while inGame:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -127,7 +130,12 @@ while inGame:
                 if asteroids.isBeyond():
                     randomCoordToAsteroids(asteroids)
                 else:
-                    asteroids.fallDown(6)
+                    asteroids.fallDown(contatore)
+        elif event.type == pygame.USEREVENT + 1:
+            increaseSpeed = True
+            contatore += 4
+            print(contatore)
+
     sprite_list.update()
     asteroids_group.update()
     collision = pygame.sprite.spritecollide(sp, asteroids_group, False)
@@ -152,7 +160,6 @@ while inGame:
     screen.blit(shuttle, sp.getRect())
     for x in asteroids_group:
         screen.blit(asteroid, x.getRect())
-
 
     pygame.display.flip()
     clock.tick(60)
