@@ -81,6 +81,9 @@ asteroid = pygame.image.load("asteroid.png")
 missileimg = pygame.image.load("missile.png")
 destroyed_asteroids = pygame.image.load("destroyed-planet.png")
 sound = pygame.mixer.Sound('explosion.wav')
+pygame.mixer.music.load('song.mp3')
+pygame.mixer.music.play(-1)
+
 
 # initialize screen game
 size_screen = (width, heigth) = 415, 415
@@ -88,6 +91,7 @@ screen = pygame.display.set_mode(size_screen)
 menu = True;
 contatore = 4
 while menu:
+
     menuFun(screen)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
