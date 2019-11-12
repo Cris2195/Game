@@ -80,6 +80,7 @@ shuttle = pygame.image.load("rocket.png")
 asteroid = pygame.image.load("asteroid.png")
 missileimg = pygame.image.load("missile.png")
 destroyed_asteroids = pygame.image.load("destroyed-planet.png")
+sound = pygame.mixer.Sound('explosion.wav')
 
 # initialize screen game
 size_screen = (width, heigth) = 415, 415
@@ -154,6 +155,7 @@ while inGame:
     if missile is not None:
         collisionMissile = pygame.sprite.spritecollide(missile, asteroids_group, False)
         for coll in collisionMissile:
+            sound.play()
             screen.blit(bk, (0, 0))
             screen.blit(destroyed_asteroids, coll.getRect())
             pygame.display.flip()
