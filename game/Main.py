@@ -40,10 +40,9 @@ def getRandomCoord(*args):
 def menuFun(screen):
     font = pygame.font.SysFont("comicsansms", 40)
     text = font.render("Asteroid", True, random.choice(list_of_colors))
-    print(pygame.font.get_fonts())
     font1 = pygame.font.SysFont("constantia",20)
-    info = font1.render("Push space to begin",True,BLACK)
-    screen.fill((255, 255, 255))
+    info = font1.render("Push space to begin",True,WHITE)
+    screen.blit(menu_background, (0, 0))
     screen.blit(text, (130, 140))
     screen.blit(info,(130,210))
     pygame.display.flip()
@@ -85,21 +84,25 @@ asteroid = pygame.image.load("asteroid.png")
 missileimg = pygame.image.load("missile.png")
 destroyed_asteroids = pygame.image.load("destroyed-planet.png")
 sound = pygame.mixer.Sound('explosion.wav')
+menu_background = pygame.image.load("1.png")
 pygame.mixer.music.load('song.mp3')
+surface_icon = pygame.image.load("asteroidIcon.png")
 pygame.mixer.music.play(-1)
 
 
 # initialize screen game
 size_screen = (width, heigth) = 415, 415
 screen = pygame.display.set_mode(size_screen)
+pygame.display.set_caption("Asteroids")
+pygame.display.set_icon(surface_icon)
 menu = True;
 contatore = 4
 while menu:
-
     menuFun(screen)
+    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            inGame = False
+            menu = False
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -131,6 +134,7 @@ asteroids_group.add(b5)
 pygame.time.set_timer(pygame.USEREVENT, 100)
 pygame.time.set_timer(pygame.USEREVENT + 1, 10000)
 while inGame:
+    clock.tick(60)
     keepcounting(screen, list(asteroids_group))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
