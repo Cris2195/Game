@@ -63,6 +63,15 @@ def finishGame(risultato: str, screen):
         pygame.time.delay(1000)
 
 
+def keepcounting(screen, lista):
+    font = pygame.font.SysFont("comicsansms", 16)
+    text = font.render("Meteoriti Rimasti", True, WHITE)
+    cont = font.render(str(len(lista)), True, GREEN)
+    screen.blit(text, (10, 10))
+    screen.blit(cont, (30, 30))
+    pygame.display.flip()
+
+
 # initialize pygame
 pygame.init()
 # load background image
@@ -111,8 +120,9 @@ asteroids_group.add(b3)
 asteroids_group.add(b4)
 asteroids_group.add(b5)
 pygame.time.set_timer(pygame.USEREVENT, 100)
-pygame.time.set_timer(pygame.USEREVENT + 1 , 10000)
+pygame.time.set_timer(pygame.USEREVENT + 1, 10000)
 while inGame:
+    keepcounting(screen, list(asteroids_group))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             inGame = False
@@ -135,7 +145,6 @@ while inGame:
             increaseSpeed = True
             contatore += 4
             print(contatore)
-
     sprite_list.update()
     asteroids_group.update()
     collision = pygame.sprite.spritecollide(sp, asteroids_group, False)
