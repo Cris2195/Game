@@ -3,6 +3,7 @@ import sys
 from StarShip import Starship
 from Asteroid import Asteroid
 from Missile import Missile
+from Shield import Shield
 import random
 
 # COLORS
@@ -40,11 +41,11 @@ def getRandomCoord(*args):
 def menuFun(screen):
     font = pygame.font.SysFont("comicsansms", 40)
     text = font.render("Asteroid", True, random.choice(list_of_colors))
-    font1 = pygame.font.SysFont("constantia",20)
-    info = font1.render("Push space to begin",True,WHITE)
+    font1 = pygame.font.SysFont("constantia", 20)
+    info = font1.render("Push space to begin", True, WHITE)
     screen.blit(menu_background, (0, 0))
     screen.blit(text, (130, 140))
-    screen.blit(info,(130,210))
+    screen.blit(info, (130, 210))
     pygame.display.flip()
 
 
@@ -75,6 +76,13 @@ def keepcounting(screen, lista):
     pygame.display.flip()
 
 
+def activatedShield():
+    font = pygame.font.SysFont("comicsansms", 16)
+    text = font.render("Scudo Attivato", True, RED)
+    screen.blit(text, (250, 10))
+    pygame.display.flip()
+
+
 # initialize pygame
 pygame.init()
 # load background image
@@ -83,12 +91,12 @@ shuttle = pygame.image.load("rocket.png")
 asteroid = pygame.image.load("asteroid.png")
 missileimg = pygame.image.load("missile.png")
 destroyed_asteroids = pygame.image.load("destroyed-planet.png")
+sh = pygame.image.load("shield.png")
 sound = pygame.mixer.Sound('explosion.wav')
 menu_background = pygame.image.load("1.png")
 pygame.mixer.music.load('song.mp3')
 surface_icon = pygame.image.load("asteroidIcon.png")
 pygame.mixer.music.play(-1)
-
 
 # initialize screen game
 size_screen = (width, heigth) = 415, 415
@@ -114,6 +122,7 @@ clock = pygame.time.Clock()
 inGame = True
 fire = False
 increaseSpeed = False
+isProtected = False
 sprite_list = pygame.sprite.Group()
 asteroids_group = pygame.sprite.Group()
 sp = Starship()
@@ -135,7 +144,6 @@ pygame.time.set_timer(pygame.USEREVENT, 100)
 pygame.time.set_timer(pygame.USEREVENT + 1, 10000)
 while inGame:
     clock.tick(60)
-    keepcounting(screen, list(asteroids_group))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             inGame = False
@@ -148,6 +156,10 @@ while inGame:
             if event.key == pygame.K_SPACE:
                 missile = Missile(sp.rect.x - 5, sp.rect.y - 5)
                 fire = True
+            if event.key == pygame.K_1:
+                shield = Shield()
+                pygame.time.set_timer(pygame.USEREVENT + 2, shield.getDurata())
+                isProtected = True
         elif event.type == pygame.USEREVENT:
             for asteroids in asteroids_group:
                 if asteroids.isBeyond():
@@ -158,12 +170,11 @@ while inGame:
             increaseSpeed = True
             contatore += 4
             print(contatore)
+        elif event.type == pygame.USEREVENT + 2:
+            isProtected = False
+
     sprite_list.update()
     asteroids_group.update()
-    collision = pygame.sprite.spritecollide(sp, asteroids_group, False)
-    for c in collision:
-        finishGame("GAME OVER", screen)
-        inGame = False
     if missile is not None:
         collisionMissile = pygame.sprite.spritecollide(missile, asteroids_group, False)
         for coll in collisionMissile:
@@ -183,7 +194,15 @@ while inGame:
     screen.blit(shuttle, sp.getRect())
     for x in asteroids_group:
         screen.blit(asteroid, x.getRect())
-
+    if not isProtected:
+        collision = pygame.sprite.spritecollide(sp, asteroids_group, False)
+        for c in collision:
+            finishGame("GAME OVER", screen)
+            inGame = False
+    else:
+        screen.blit(sh, shield.getRect())
+        activatedShield()
+    keepcounting(screen, list(asteroids_group))
     pygame.display.flip()
     clock.tick(60)
 
