@@ -85,7 +85,7 @@ def activatedShield():
 
 # initialize pygame
 pygame.init()
-# load background image
+# initialize resources
 bk = pygame.image.load("sfondo.png")
 shuttle = pygame.image.load("rocket.png")
 asteroid = pygame.image.load("asteroid.png")
