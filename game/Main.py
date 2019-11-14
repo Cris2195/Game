@@ -1,10 +1,12 @@
-import pygame
+import random
 import sys
-from StarShip import Starship
+
+import pygame
+
 from Asteroid import Asteroid
 from Missile import Missile
 from Shield import Shield
-import random
+from StarShip import Starship
 
 # COLORS
 BLACK = (0, 0, 0)
@@ -87,6 +89,21 @@ def redrawScreen(screen):
     screen.blit(bk, (0, bgy2))
 
 
+def drawScore(screen, score):
+    font = pygame.font.SysFont("comicsansms", 16)
+    text = font.render("Punteggio", True, WHITE)
+    cont = font.render(str(score), True, GREEN)
+    screen.blit(text, (10, 80))
+    screen.blit(cont, (30, 100))
+
+
+def savePunteggioOnFile(score):
+    with open("punteggio.txt", "w") as f:
+        f.write("Punteggio Effettuato " + str(score))
+        f.flush()
+
+
+
 # initialize pygame
 pygame.init()
 size_screen = (width, heigth) = 415, 415
@@ -150,7 +167,7 @@ asteroids_group.add(b5)
 pygame.time.set_timer(pygame.USEREVENT, 100)
 pygame.time.set_timer(pygame.USEREVENT + 1, 10000)
 pygame.time.set_timer(pygame.USEREVENT + 4, 100)
-y = 0
+score = 0
 bk_speed = 3.9
 while inGame:
     clock.tick(50)
@@ -185,6 +202,7 @@ while inGame:
         elif event.type == pygame.USEREVENT + 1:
             increaseSpeed = True
             contatore += 4
+            score += 1
             print(contatore)
         elif event.type == pygame.USEREVENT + 2:
             isProtected = False
@@ -211,10 +229,12 @@ while inGame:
         for c in collision:
             finishGame("GAME OVER", screen)
             inGame = False
+            savePunteggioOnFile(score)
     else:
         screen.blit(sh, shield.getRect())
         activatedShield()
     keepcounting(screen, list(asteroids_group))
+    drawScore(screen, score)
     screen.blit(shuttle, sp.getRect())
     pygame.display.flip()
     clock.tick(70)
