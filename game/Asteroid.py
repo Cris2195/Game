@@ -22,7 +22,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect.y = y
 
     def isBeyond(self):
-        return self.rect.y >= 396
+        return self.rect.y >= 389
 
     def getRect(self):
         return self.rect
