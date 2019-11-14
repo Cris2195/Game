@@ -106,7 +106,7 @@ pygame.mixer.music.play(-1)
 # initialize screen game
 
 bkPure = pygame.image.load("back.png").convert_alpha()
-bk = pygame.transform.scale(bkPure,(415,415))
+bk = pygame.transform.scale(bkPure, (415, 415))
 bgy = 0
 bgy2 = - bk.get_rect().height
 pygame.display.set_caption("Asteroids")
@@ -124,7 +124,7 @@ while menu:
             if event.key == pygame.K_SPACE:
                 menu = False
 
-#pygame.display.flip()
+# pygame.display.flip()
 clock = pygame.time.Clock()
 inGame = True
 fire = False
@@ -156,9 +156,9 @@ while inGame:
     clock.tick(50)
     bgy += bk_speed
     bgy2 += bk_speed
-    if bgy >=  bk.get_rect().height:
+    if bgy >= bk.get_rect().height:
         bgy = -bk.get_rect().height
-    if bgy2 >=  bk.get_rect().height:
+    if bgy2 >= bk.get_rect().height:
         bgy2 = -bk.get_rect().height
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -203,7 +203,7 @@ while inGame:
     if fire:
         missile.move()
         screen.blit(missileimg, missile.getRect())
-    screen.blit(shuttle, sp.getRect())
+
     for x in asteroids_group:
         screen.blit(asteroid, x.getRect())
     if not isProtected:
@@ -215,8 +215,8 @@ while inGame:
         screen.blit(sh, shield.getRect())
         activatedShield()
     keepcounting(screen, list(asteroids_group))
+    screen.blit(shuttle, sp.getRect())
     pygame.display.flip()
     clock.tick(70)
-
 
 pygame.quit()
