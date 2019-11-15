@@ -1,6 +1,6 @@
 import random
 import sys
-
+import subprocess as sb
 import pygame
 
 from Asteroid import Asteroid
@@ -101,7 +101,6 @@ def savePunteggioOnFile(score):
     with open("punteggio.txt", "w") as f:
         f.write("Punteggio Effettuato " + str(score))
         f.flush()
-
 
 
 # initialize pygame
@@ -219,6 +218,7 @@ while inGame:
         finishGame("YOU WON", screen)
         savePunteggioOnFile(score)
         inGame = False
+
     if fire:
         missile.move()
         screen.blit(missileimg, missile.getRect())
@@ -239,5 +239,7 @@ while inGame:
     screen.blit(shuttle, sp.getRect())
     pygame.display.flip()
     clock.tick(70)
-
 pygame.quit()
+if not inGame:
+    sb.run(["notepad","punteggio.txt"])
+
