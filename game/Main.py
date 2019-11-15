@@ -217,6 +217,7 @@ while inGame:
             asteroids_group.remove(coll)
     if len(list(asteroids_group)) == 0:
         finishGame("YOU WON", screen)
+        savePunteggioOnFile(score)
         inGame = False
     if fire:
         missile.move()
